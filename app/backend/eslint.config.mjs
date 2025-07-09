@@ -1,11 +1,14 @@
 import json from "@eslint/json";
 import markdown from "@eslint/markdown";
 import css from "@eslint/css";
+import tseslint from "typescript-eslint";
 import { defineConfig } from "eslint/config";
 
 
 export default defineConfig([
   { ignores: ["**/*.js", "**/*.cjs", "**/*.mjs"] },
+  { files: ["**/*.ts", "**/*.tsx"], plugins: { "@typescript-eslint": tseslint.plugin }, languageOptions: { parser: tseslint.parser }, extends: [tseslint.configs.recommended] },
+  { files: ["**/*.json"], plugins: { json }, language: "json/json", extends: ["json/recommended"] },
   { files: ["**/*.json"], plugins: { json }, language: "json/json", extends: ["json/recommended"] },
   { files: ["**/*.jsonc"], plugins: { json }, language: "json/jsonc", extends: ["json/recommended"] },
   { files: ["**/*.json5"], plugins: { json }, language: "json/json5", extends: ["json/recommended"] },
