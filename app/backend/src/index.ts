@@ -1,13 +1,15 @@
-import http from 'http';
+import express from 'express';
+import dotenv from 'dotenv';
+import authRouter from './routes/auth';
 
-const PORT = process.env.PORT || 3000;
+dotenv.config();
+const app = express();
+const port = 3000;
 
-const server = http.createServer(async (req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end("Hello, World!");
-});
+// ルーティング登録
+app.use('/auth', authRouter);
+// /auth/login, /auth/callback
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`);
 });
