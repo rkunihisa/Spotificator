@@ -1,5 +1,7 @@
+
 import { Router, Request, Response } from 'express';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID as string;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET as string;
@@ -7,14 +9,9 @@ const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI as string;
 
 const router = Router();
 
-const generateRandomString = (length: number): string => {
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  return Array.from({ length }, () => possible[Math.floor(Math.random() * possible.length)]).join('');
-};
-
 router.get('/login', (_req: Request, res: Response) => {
-  const state = generateRandomString(16);
-  const scope = 'user-read-private user-read-email';
+  const state = uuidv4();
+  const scope = 'user-top-read';
 
   const params = new URLSearchParams({
     response_type: 'code',
