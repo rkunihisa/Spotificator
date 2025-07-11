@@ -1,5 +1,5 @@
 import { TopTracksResponse } from './topTrackResponseType';
-
+import { TopTracksRequest } from './topTrackRequestType';
 export interface SpotifyClientInterface {
-  getTopTracks(term: string, limit: number, offset: number): Promise<TopTracksResponse>;
+  getTopTracks(TopTracksRequest: TopTracksRequest): Promise<TopTracksResponse>;
 }

@@ -1,4 +1,5 @@
 import { TopTracksResponse } from '../domain/model/topTrackResponseType';
+import { TopTracksRequest } from '../domain/model/topTrackRequestType';
 import { SpotifyClientInterface } from '../domain/model/spotifyClientInterface';
 
 export class SpotifyClient implements SpotifyClientInterface {
@@ -8,8 +9,13 @@ export class SpotifyClient implements SpotifyClientInterface {
     this.token = token;
   }
 
-  async getTopTracks(term: string, limit: number, offset: number): Promise<TopTracksResponse> {
-    const url = `https://api.spotify.com/v1/me/top/tracks?time_range=${term}&limit=${limit}&offset=${offset}`;
+  async getTopTracks(TopTracksRequest: TopTracksRequest): Promise<TopTracksResponse> {
+    const params = new URLSearchParams({
+      time_range: TopTracksRequest.term,
+      limit: TopTracksRequest.limit.toString(),
+      offset: TopTracksRequest.offset.toString(),
+    });
+    const url = `https://api.spotify.com/v1/me/top/tracks?${params.toString()}`;
     const headers = {
       'Authorization': `Bearer ${this.token}`,
     };
@@ -17,7 +23,7 @@ export class SpotifyClient implements SpotifyClientInterface {
     if (res.ok) {
       return await res.json();
     } else {
-      throw new Error(`Failed to fetch top tracks: ${res.status} ${res.statusText}`);
+      throw new Error(`Failed to fetch top tracks: ${res.status} ${res.statusText} `);
     }
   }
 }
