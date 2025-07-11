@@ -1,8 +1,8 @@
-/** @type {import("jest").Config} **/
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  roots: ["<rootDir>/test", "<rootDir>/src"],
+  roots: ["<rootDir>/tests", "<rootDir>/src"],
   transform: {
     // @swc/jestを使用してテストを高速に実行する
     '^.+\\.tsx?$': ['@swc/jest', {}],
@@ -13,12 +13,14 @@ module.exports = {
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",
     "<rootDir>/dist/",
-    "<rootDir>/src/index.ts"],
+    "<rootDir>/src/index.ts",
+    "<rootDir>/src/types/",],
   collectCoverage: true,
   collectCoverageFrom: [
     "**/*.ts",
     "!**/node_modules/**",
     "!**/index.ts",
+    "!**/types/**",
   ],
   // coverageDirectory: 'coverage_dir',
 };
