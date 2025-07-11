@@ -14,19 +14,4 @@ export default defineConfig([
   { files: ['**/*.md'], plugins: { markdown }, language: 'markdown/commonmark', extends: ['markdown/recommended'] },
   { languageOptions: { globals: globals.node } },
   tseslint.configs.recommended,
-  { plugins: ['prettier'] },
-  // {
-  //   rules: {
-  //     quotes: ['error', 'single'],
-  //     'prettier/prettier': [
-  //       'error',
-  //       {
-  //         htmlWhitespaceSensitivity: 'ignore',
-  //         semi: true,
-  //         singleQuote: true,
-  //         trailingComma: 'all',
-  //       },
-  //     ],
-  //   },
-  // },
 ]);
