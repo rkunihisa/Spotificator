@@ -1,6 +1,13 @@
 import { Router, Request, Response } from 'express';
-import axios from 'axios';
 import { v6 as uuidv6 } from 'uuid';
+import axios from 'axios';
+import dotenv from 'dotenv';
+
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config({ path: '.env.development' });
+} else {
+  dotenv.config();
+}
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID as string;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET as string;
@@ -13,9 +20,7 @@ router.get('/login', (req: Request, res: Response) => {
   // add if you want to change the scope
   const scope = 'user-top-read';
 
-  if (req.session) {
-    req.session.spotify_auth_state = state;
-  }
+  console.log('session:', req.session);
 
   const params = new URLSearchParams({
     response_type: 'code',
@@ -32,11 +37,9 @@ router.get('/callback', async (req: Request, res: Response) => {
   const code = req.query.code as string;
   const state = req.query.state as string;
 
-  if (!code || !state || !req.session || state !== req.session.spotify_auth_state) {
+  if (!code || !state) {
     return res.status(400).send('Invalid state or code');
   }
-
-  delete req.session.spotify_auth_state;
 
   try {
     const params = new URLSearchParams({
