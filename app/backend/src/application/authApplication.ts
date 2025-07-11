@@ -29,7 +29,7 @@ export class AuthApplication {
         res.redirect(`https://accounts.spotify.com/authorize?${params.toString()}`);
     };
 
-    static async callback(req: Request, res: Response): Promise<any> {
+    static async callback(req: Request, res: Response): Promise<void> {
         const code = req.query.code as string;
         const state = req.query.state as string;
 
@@ -61,9 +61,9 @@ export class AuthApplication {
             }
 
             const { access_token, refresh_token } = await tokenResponse.json();
-            return res.json({ access_token, refresh_token });
+            res.json({ access_token, refresh_token });
         } catch (error) {
-            return res.status(400).json({ error: error instanceof Error ? error.message : 'Unknown error' });
+            res.status(400).json({ error: error instanceof Error ? error.message : 'Unknown error' });
         }
     }
 }
