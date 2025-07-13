@@ -1,8 +1,8 @@
 import { SpotifyClientInterface } from "../model/spotifyClientInterface";
-import { TopTracksResponse } from "../model/topTrackResponseType";
-import { TopTracksRequest } from "../model/topTrackRequestType";
+import { TopTracksResponse } from "../model/topTracksResponseType";
+import { TopTracksRequest } from "../model/topTracksRequestType";
 
-export class TopTrackService {
+export class TopTracksService {
     private spotifyClient: SpotifyClientInterface;
     private topTracksRequest: TopTracksRequest;
 

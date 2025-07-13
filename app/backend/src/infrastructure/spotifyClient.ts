@@ -1,5 +1,5 @@
-import { TopTracksResponse } from '../domain/model/topTrackResponseType';
-import { TopTracksRequest } from '../domain/model/topTrackRequestType';
+import { TopTracksResponse } from '../domain/model/topTracksResponseType';
+import { TopTracksRequest } from '../domain/model/topTracksRequestType';
 import { SpotifyClientInterface } from '../domain/model/spotifyClientInterface';
 
 export class SpotifyClient implements SpotifyClientInterface {
@@ -29,9 +29,14 @@ export class SpotifyClient implements SpotifyClientInterface {
 }
 
 // if (require.main === module) {
-//   const token = 'your_access_token_here';
+//   const token = 'your token here';
 //   const client = new SpotifyClient(token);
-//   client.getTopTracks('short_term', 10, 0)
+//   const topTracksRequest: TopTracksRequest = {
+//     term: 'short_term',
+//     limit: 10,
+//     offset: 0,
+//   };
+//   client.getTopTracks(topTracksRequest)
 //     .then(response => console.log(response))
 //     .catch(error => console.error(error));
 // }
