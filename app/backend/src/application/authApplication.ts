@@ -61,7 +61,9 @@ export class AuthApplication {
             }
 
             const { access_token, refresh_token } = await tokenResponse.json();
-            res.json({ access_token, refresh_token });
+            // 認証後、フロントエンドにリダイレクトしトークンをクエリで渡す
+            const frontendUrl = 'http://localhost:5173/?access_token=' + encodeURIComponent(access_token) + '&refresh_token=' + encodeURIComponent(refresh_token);
+            res.redirect(frontendUrl);
         } catch (error) {
             res.status(400).json({ error: error instanceof Error ? error.message : 'Unknown error' });
         }
