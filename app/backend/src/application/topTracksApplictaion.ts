@@ -19,10 +19,7 @@ export class TopTracksApplication {
 
         try {
             const result = await topTrackService.get();
-            const frontendUrl = 'http://localhost:5173/dashboard/top-tracks';
-            console.log('Top Tracks Response:', result);
             res.json(result);
-            res.redirect(frontendUrl);
         } catch (error) {
             res.status(400).json({ error: error instanceof Error ? error.message : 'Unknown error' });
         }
