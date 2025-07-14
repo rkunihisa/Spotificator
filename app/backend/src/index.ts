@@ -1,8 +1,10 @@
 import express from 'express';
+import cors from 'cors';
 import authRouter from './routes/auth';
 import topTracksRouter from './routes/topTracks';
 
 const app = express();
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 const port = 3000;
 
 // /auth/login, /auth/callback
