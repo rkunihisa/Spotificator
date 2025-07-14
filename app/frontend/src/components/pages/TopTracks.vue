@@ -5,8 +5,13 @@
     <div v-if="loading">Loading...</div>
     <div v-else-if="error">Error: {{ error }}</div>
     <ul v-else>
-      <li v-for="track in topTracks.items" :key="track.id">
-        {{ track.name }} / {{ track.artists[0]?.name }}
+      <li v-for="track in topTracks.items" :key="track.id" >
+        <span>
+          {{ track.name }} / {{ track.artists[0]?.name }}
+        </span>
+        <span v-if="track.album.images.length > 0">
+          <img :src="track.album.images[0].url" alt="Album cover" style="width: 50px; height: 50px; margin-left: 10px;">
+        </span>
       </li>
     </ul>
   </div>
