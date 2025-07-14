@@ -41,15 +41,18 @@ const term = ref('short_term');
 const limit = ref(10);
 const offset = ref(0);
 
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
 function getTopTracks() {
   if (!accessToken.value) {
     alert('Please log in to Spotify first.');
     return;
   }
-    window.location.href = 'http://127.0.0.1:3000/top-tracks?access_token=' + encodeURIComponent(accessToken.value) +
-      '&term=' + encodeURIComponent(term.value) +
-      '&limit=' + encodeURIComponent(limit.value) +
-      '&offset=' + encodeURIComponent(offset.value);
+  localStorage.setItem('term', term.value);
+  localStorage.setItem('limit', limit.value);
+  localStorage.setItem('offset', offset.value);
+  router.push('/dashboard/top-tracks');
 }
 
 onMounted(() => {
