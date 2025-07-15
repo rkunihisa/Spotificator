@@ -7,7 +7,7 @@
         Dashboard
       </h1>
       <div class="h-1 w-24 bg-[#1db954] rounded mb-8"></div>
-      <form class="flex flex-col gap-4 mb-8 bg-[#181818] rounded-lg p-6 shadow">
+      <form class="flex flex-col gap-4 mb-8 bg-[#181818] rounded-lg p-6 shadow" @submit.prevent="getTopTracks">
         <div class="flex flex-col sm:flex-row gap-4">
           <label class="flex flex-col text-white text-sm font-semibold w-full">
             Term
@@ -31,10 +31,13 @@
           :term="term"
           :limit="limit"
           :offset="offset"
-          @click ="getTopTracks"
+          type="submit"
           class="mt-4 w-full"
         >Get your top tracks</Button>
       </form>
+      <div v-if="showTopTracks" class="mt-10">
+        <TopTracks :items="topTracks.items" :loading="loading" :error="error" />
+      </div>
     </div>
   </div>
 </template>
@@ -42,18 +45,25 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import Button from '@/components/modules/Button.vue';
+import TopTracks from './TopTracks.vue';
+
 
 const accessToken = ref('');
 const refreshToken = ref('');
-
 const term = ref('short_term');
 const limit = ref(10);
 const offset = ref(0);
 
+// TopTracks state
+const topTracks = ref({ items: [] });
+const loading = ref(false);
+const error = ref('');
+const showTopTracks = ref(false);
+
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-function getTopTracks() {
+async function getTopTracks() {
   if (!accessToken.value) {
     alert('Please log in to Spotify first.');
     return;
@@ -61,7 +71,25 @@ function getTopTracks() {
   localStorage.setItem('term', term.value);
   localStorage.setItem('limit', limit.value);
   localStorage.setItem('offset', offset.value);
-  router.push('/dashboard/top-tracks');
+  loading.value = true;
+  error.value = '';
+  showTopTracks.value = false;
+  try {
+    const params = new URLSearchParams({
+      access_token: accessToken.value,
+      term: term.value,
+      limit: limit.value,
+      offset: offset.value,
+    });
+    const res = await fetch(`http://127.0.0.1:3000/top-tracks?${params.toString()}`);
+    if (!res.ok) throw new Error(await res.text());
+    topTracks.value = await res.json();
+    showTopTracks.value = true;
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : String(e);
+  } finally {
+    loading.value = false;
+  }
 }
 
 onMounted(() => {
