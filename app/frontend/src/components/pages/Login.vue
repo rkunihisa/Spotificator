@@ -14,6 +14,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth.js';
 import Button from '@/components/modules/Button.vue';
 
 const router = useRouter();
@@ -24,12 +25,9 @@ function loginWithSpotify() {
 }
 
 onMounted(() => {
-  // Spotify認証後に?access_token=...がクエリにあれば保存しDashboardへ
+  const authStore = useAuthStore();
   if (route.query.access_token) {
-    localStorage.setItem('access_token', route.query.access_token);
-    if (route.query.refresh_token) {
-      localStorage.setItem('refresh_token', route.query.refresh_token);
-    }
+    authStore.setTokens(route.query.access_token, route.query.refresh_token);
     router.replace('/dashboard');
   }
 });
