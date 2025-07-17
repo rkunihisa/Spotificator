@@ -8,15 +8,26 @@
     <div class="h-1 w-24 bg-[#1db954] rounded mb-8"></div>
     <div v-if="loading" class="text-white text-lg mt-8">Loading...</div>
     <div v-else-if="error" class="text-red-400 text-lg mt-8">Error: {{ error }}</div>
-    <ul v-else class="grid grid-cols-3 grid-rows-2 gap-6 mt-6">
-      <Track v-for="track in items" :key="track.id" :track="track" />
-    </ul>
+    <div v-else>
+      <Carousel v-if="isMobile" v-bind="carouselConfig" :items-to-show="3" :wrap-around="false" class="mt-6">
+        <Slide v-for="track in items" :key="track.id" class="px-1">
+          <Track :track="track" />
+        </Slide>
+      </Carousel>
+      <ul v-else class="grid sm:grid-cols-3 grid-cols-1 gap-6 mt-6">
+        <Track v-for="track in items" :key="track.id" :track="track" />
+      </ul>
+    </div>
   </div>
 </template>
 
 <script setup>
 import Track from '../modules/Track.vue';
-defineProps({
+import { ref, onMounted } from 'vue';
+import 'vue3-carousel/dist/carousel.css';
+import { Carousel, Slide } from 'vue3-carousel';
+
+const props = defineProps({
   items: {
     type: Array,
     required: true
@@ -29,5 +40,14 @@ defineProps({
     type: String,
     default: ''
   }
+});
+
+const isMobile = ref(false);
+function checkMobile() {
+  isMobile.value = window.innerWidth <= 640;
+}
+onMounted(() => {
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
 });
 </script>
