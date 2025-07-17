@@ -46,7 +46,7 @@
 import { ref, onMounted } from 'vue';
 import Button from '@/components/modules/Button.vue';
 import TopTracks from './TopTracks.vue';
-
+import axios from 'axios';
 
 const accessToken = ref('');
 const refreshToken = ref('');
@@ -81,12 +81,19 @@ async function getTopTracks() {
       limit: limit.value,
       offset: offset.value,
     });
-    const res = await fetch(`http://127.0.0.1:3000/top-tracks?${params.toString()}`);
-    if (!res.ok) throw new Error(await res.text());
-    topTracks.value = await res.json();
+    const res = await axios.get(`http://127.0.0.1:3000/top-tracks?${params.toString()}`);
+    topTracks.value = res.data;
     showTopTracks.value = true;
   } catch (e) {
-    error.value = e instanceof Error ? e.message : String(e);
+    if (axios.isAxiosError(e)) {
+      console.error('Error fetching top tracks:', e.response?.data || e.message);
+      if (e.response) {
+        console.error('Status:', e.response.status);
+        console.error('Data:', e.response.data);
+      }
+    } else {
+      console.error('Unexpected error:', e);
+    }
   } finally {
     loading.value = false;
   }
