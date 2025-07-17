@@ -8,8 +8,8 @@
     <div class="h-1 w-24 bg-[#1db954] rounded mb-8"></div>
     <div v-if="loading" class="text-white text-lg mt-8">Loading...</div>
     <div v-else-if="error" class="text-red-400 text-lg mt-8">Error: {{ error }}</div>
-    <ul v-else class="grid grid-cols-5 grid-rows-2 gap-6 mt-6">
-      <Track v-for="track in items.slice(0, 10)" :key="track.id" :track="track" />
+    <ul v-else class="grid grid-cols-3 grid-rows-2 gap-6 mt-6">
+      <Track v-for="track in items" :key="track.id" :track="track" />
     </ul>
   </div>
 </template>
