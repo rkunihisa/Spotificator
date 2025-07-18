@@ -8,6 +8,7 @@
         v-if="props.track.album.images.length > 0"
         :src="props.track.album.images[0].url"
         alt="Album cover"
+        crossorigin="anonymous"
         class="w-32 h-32 object-cover rounded-md shadow-md border-2 border-[#282828]"
       >
     </div>
