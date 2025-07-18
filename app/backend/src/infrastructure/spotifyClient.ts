@@ -13,7 +13,6 @@ export class SpotifyClient implements SpotifyClientInterface {
     const params = new URLSearchParams({
       time_range: TopTracksRequest.term,
       limit: TopTracksRequest.limit.toString(),
-      offset: TopTracksRequest.offset.toString(),
     });
     const url = `https://api.spotify.com/v1/me/top/tracks?${params.toString()}`;
     const headers = {
@@ -27,16 +26,3 @@ export class SpotifyClient implements SpotifyClientInterface {
     }
   }
 }
-
-// if (require.main === module) {
-//   const token = 'your token here';
-//   const client = new SpotifyClient(token);
-//   const topTracksRequest: TopTracksRequest = {
-//     term: 'short_term',
-//     limit: 10,
-//     offset: 0,
-//   };
-//   client.getTopTracks(topTracksRequest)
-//     .then(response => console.log(response))
-//     .catch(error => console.error(error));
-// }

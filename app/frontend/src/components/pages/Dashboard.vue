@@ -1,4 +1,3 @@
-
 <template>
   <div class="min-h-screen bg-[#121212] py-10 px-2 font-sans">
     <div class="max-w-2xl mx-auto px-4 sm:px-8">
@@ -13,18 +12,14 @@
           <label class="flex flex-col text-white text-sm font-semibold w-full">
             Term
             <select v-model="term" class="mt-1 rounded bg-[#282828] text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1db954]">
-              <option value="short_term">short_term</option>
-              <option value="medium_term">medium_term</option>
-              <option value="long_term">long_term</option>
+              <option value="short_term">1 month</option>
+              <option value="medium_term">6 months</option>
+              <option value="long_term">1 year</option>
             </select>
           </label>
           <label class="flex flex-col text-white text-sm font-semibold w-full">
-            Limit
+            Number of Tracks
             <input type="number" v-model.number="limit" min="1" max="50" class="mt-1 rounded bg-[#282828] text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1db954]" />
-          </label>
-          <label class="flex flex-col text-white text-sm font-semibold w-full">
-            Offset
-            <input type="number" v-model.number="offset" min="0" class="mt-1 rounded bg-[#282828] text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1db954]" />
           </label>
         </div>
         <Button
@@ -54,7 +49,6 @@ const accessToken = ref('');
 const refreshToken = ref('');
 const term = ref('short_term');
 const limit = ref(10);
-const offset = ref(0);
 
 // TopTracks state
 const topTracks = ref({ items: [] });
@@ -78,7 +72,6 @@ async function getTopTracks() {
   }
   localStorage.setItem('term', term.value);
   localStorage.setItem('limit', limit.value);
-  localStorage.setItem('offset', offset.value);
   loading.value = true;
   error.value = '';
   showTopTracks.value = false;
@@ -87,7 +80,6 @@ async function getTopTracks() {
       access_token: accessToken.value,
       term: term.value,
       limit: limit.value,
-      offset: offset.value,
     });
     const res = await axios.get(`http://127.0.0.1:3000/top-tracks?${params.toString()}`);
     topTracks.value = res.data;

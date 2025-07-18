@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-tight flex items-center gap-3">
