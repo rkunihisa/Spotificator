@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
+  backend-ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -32,3 +32,30 @@ jobs:
       - name: Run CI
         run: npm run ci
         working-directory: app/backend
+
+  frontend-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Dependency restore
+        id: cache-restore
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: js-depend-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Dependency installing
+        if: steps.cache-restore.outputs.cache-hit != 'true'
+        run: npm ci
+        working-directory: app/frontend
+
+      - name: Run CI
+        run: npm run ci
+        working-directory: app/frontend
